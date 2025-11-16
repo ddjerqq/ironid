@@ -17,7 +17,7 @@ internal readonly record struct EntityIronIdContext(string? Namespace, string Ty
     public static EntityIronIdContext FromEntityTypeInfo(INamedTypeSymbol entityType, CancellationToken ct)
     {
         var ns = entityType.ContainingNamespace.IsGlobalNamespace
-            ? null
+            ? "IronId.Generated"
             : entityType.ContainingNamespace.ToDisplayString();
 
         var prefix = entityType
