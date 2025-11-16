@@ -1,0 +1,29 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src/", "{2AE367D2-551D-4702-B733-2998B5218AF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronId.Generator", "src\IronId.Generator\IronId.Generator.csproj", "{01409DF9-2413-4E70-BA40-2310B0FF1A10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test/", "{961C64BB-0403-45CE-A01E-8EBC0B3A2760}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronId.Test", "test/IronId.Test/IronId.Test.csproj", "{D564EA34-BA0D-4701-8825-DE1298EC7FA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{01409DF9-2413-4E70-BA40-2310B0FF1A10} = {2AE367D2-551D-4702-B733-2998B5218AF7}
+		{D564EA34-BA0D-4701-8825-DE1298EC7FA9} = {961C64BB-0403-45CE-A01E-8EBC0B3A2760}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01409DF9-2413-4E70-BA40-2310B0FF1A10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01409DF9-2413-4E70-BA40-2310B0FF1A10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01409DF9-2413-4E70-BA40-2310B0FF1A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01409DF9-2413-4E70-BA40-2310B0FF1A10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D564EA34-BA0D-4701-8825-DE1298EC7FA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D564EA34-BA0D-4701-8825-DE1298EC7FA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D564EA34-BA0D-4701-8825-DE1298EC7FA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D564EA34-BA0D-4701-8825-DE1298EC7FA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

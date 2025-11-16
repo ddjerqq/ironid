@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <IronIdGeneratorVersionFile>$(MSBuildThisFileDirectory)IronId.Generator\Version.cs</IronIdGeneratorVersionFile>
+    <IronIdGeneratorVersionFileContents>$([System.IO.File]::ReadAllText('$(IronIdGeneratorVersionFile)'))</IronIdGeneratorVersionFileContents>
+    <IronIdVersion>$([System.Text.RegularExpressions.Regex]::Match($(IronIdGeneratorVersionFileContents), 'Current\s*=\s*"([^\"]+)"').Groups[1].Value)</IronIdVersion>
+
+    <!-- Set MSBuild version properties so dotnet pack uses this version -->
+    <Version>$(IronIdVersion)</Version>
+    <PackageVersion>$(IronIdVersion)</PackageVersion>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <IsPackable>true</IsPackable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <PackageId>IronId</PackageId>
+        <Version>$(IronIdVersion)</Version>
+        <Authors>ddjerqq</Authors>
+        <Description>A source generator that generates strongly typed ids with custom prefixes.</Description>
+        <PackageTags>roslyn;source-generator;ddd</PackageTags>
+        <RepositoryUrl>https://github.com/ddjerqq/ironid</RepositoryUrl>
+        
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+        <DevelopmentDependency>false</DevelopmentDependency>
+        <RootNamespace>IronIdGenerator</RootNamespace>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="IronIdGenerator.props" Pack="true" PackagePath="build\$(PackageId).props" />
+        <None Include="IronIdGenerator.props" Pack="true" PackagePath="buildTransitive\$(PackageId).props" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" 
+                          IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive"/>
+
+        <PackageReference Include="Ulid" Version="1.4.1" />
+    </ItemGroup>
+</Project>

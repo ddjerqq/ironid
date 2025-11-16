@@ -1,0 +1,59 @@
+﻿name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-test-pack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/.local/share/NuGet/Cache
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj','**/*.props','**/*.targets','src/IronId.Generator/Version.cs') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore ./IronId.sln
+
+      - name: Build
+        run: dotnet build ./IronId.sln -c Release --no-restore
+
+      - name: Run tests
+        run: dotnet test ./IronId.sln -c Release --no-build --verbosity normal
+
+      - name: Pack NuGet packages
+        run: dotnet pack ./IronId.sln -c Release -o ./artifacts --no-build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./artifacts/*.nupkg
+
+      - name: Publish to NuGet.org
+        if: github.ref == 'refs/heads/master'
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "./artifacts/*.nupkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json --skip-duplicate
