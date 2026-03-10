@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -17,7 +17,7 @@ internal readonly record struct EntityIronIdContext(string? Namespace, string Ty
     public static EntityIronIdContext FromEntityTypeInfo(INamedTypeSymbol entityType, CancellationToken ct)
     {
         var ns = entityType.ContainingNamespace.IsGlobalNamespace
-            ? "IronId.Generated"
+            ? ""
             : entityType.ContainingNamespace.ToDisplayString();
 
         var prefix = entityType
