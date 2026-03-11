@@ -1,6 +1,13 @@
 <Project>
   <ItemGroup>
     <PackageReference Include="Ulid" Version="1.4.1" />
+    <PackageReference Include="System.Text.Json" Version="10.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\contentFiles\cs\any\IronId.Runtime\**\*.cs"
+             Link="IronId.Runtime\%(RecursiveDir)%(Filename)%(Extension)"
+             Visible="false" />
   </ItemGroup>
 </Project>
 

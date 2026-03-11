@@ -1,5 +1,4 @@
 using System.Text.Json;
-using IronId.Generated;
 
 namespace IronId.Test;
 
@@ -9,26 +8,16 @@ namespace IronId.Test;
 public class ExtensionMethodsTests
 {
     [Test]
-    public void ConfigureIronIdConverters_AddsJsonConverters()
-    {
-        var options = new JsonSerializerOptions();
-        var initialCount = options.Converters.Count;
-        
-        options.Converters.ConfigureIronIdConverters();
-        
-        // Should have added at least one converter (UserId)
-        Assert.That(options.Converters, Has.Count.GreaterThan(initialCount));
-    }
-
-    [Test]
     public void ConfigureIronIdConverters_WorksWithSerialization()
     {
         var options = new JsonSerializerOptions();
-        options.Converters.ConfigureIronIdConverters();
         
         var userId = UserId.New();
         var json = JsonSerializer.Serialize(userId, options);
         var deserialized = JsonSerializer.Deserialize<UserId>(json, options);
+
+        Console.WriteLine(json);
+        Console.WriteLine(deserialized);
         
         Assert.That(deserialized, Is.EqualTo(userId));
     }

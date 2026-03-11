@@ -41,5 +41,6 @@
                           IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive"/>
 
         <PackageReference Include="Ulid" Version="1.4.1"/>
+        <PackageReference Include="System.Text.Json" Version="8.0.5" PrivateAssets="all" />
     </ItemGroup>
 </Project>

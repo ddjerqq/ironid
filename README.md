@@ -14,8 +14,6 @@ what it does, example usage, and why you need it. show one attribute usage.
 # Example attribute usage:
 
 ```csharp
-using IronId.Generated;
-
 [IronId("usr")]
 public sealed record User(UserId Id);
 ```
@@ -25,8 +23,6 @@ public sealed record User(UserId Id);
 1. Annotate a domain type with the attribute and a short prefix (the prefix must be provided as the positional string argument):
 
 ```csharp
-using IronId.Generated;
-
 [IronId("ord")]
 public partial class Order { }
 ```

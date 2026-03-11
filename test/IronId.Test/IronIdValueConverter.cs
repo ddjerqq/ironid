@@ -1,6 +1,4 @@
-﻿using IronId.Generated;
-
-namespace IronId.Test;
+﻿namespace IronId.Test;
 
 /// <summary>
 /// Entity Framework Core value converter for all IronId types.
