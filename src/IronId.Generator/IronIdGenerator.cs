@@ -82,7 +82,7 @@ public sealed class IronIdGenerator : IIncrementalGenerator
                          {{GeneratedCodeAttribute}}
                          [global::System.Text.Json.Serialization.JsonConverter(typeof({{converterClassName}}))]
                          [global::System.ComponentModel.TypeConverter(typeof({{idClassName}}TypeConverter))]
-                         public readonly record struct {{idClassName}}(global::System.Ulid Value) : global::System.IIronId, global::System.IComparable, global::System.IParsable<{{idClassName}}>
+                         public readonly record struct {{idClassName}}(global::System.Ulid Value) : global::System.IIronId, global::System.IComparable
                          {
                              public const string Prefix = "{{subject.Prefix}}";
                              
@@ -97,8 +97,8 @@ public sealed class IronIdGenerator : IIncrementalGenerator
                              /// Gets the underlying Ulid value. Implements IIronId.GetValue().
                              /// </summary>
                              public global::System.Ulid GetValue() => Value;
-                             public static {{idClassName}} Parse(string s, global::System.IFormatProvider? provider = default) => TryParse(s, provider, out var result) ? result : throw new global::System.FormatException();
-                             public static bool TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, global::System.IFormatProvider? provider, out {{idClassName}} result)
+                             public static {{idClassName}} Parse(string s) => TryParse(s, out var result) ? result : throw new global::System.FormatException();
+                             public static bool TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhen(true)] string? s, out {{idClassName}} result)
                              {
                                  result = default!;
 
@@ -141,7 +141,7 @@ public sealed class IronIdGenerator : IIncrementalGenerator
                                  if (value is null)
                                      throw new global::System.Text.Json.JsonException($"Cannot deserialize null to {{idClassName}}.");
                                  
-                                 if (!{{idClassName}}.TryParse(value, null, out var result))
+                                 if (!{{idClassName}}.TryParse(value, out var result))
                                      throw new global::System.Text.Json.JsonException($"Invalid {{idClassName}} format: {value}");
                                  
                                  return result;
@@ -165,7 +165,7 @@ public sealed class IronIdGenerator : IIncrementalGenerator
                                  sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
 
                              public override object? ConvertFrom(global::System.ComponentModel.ITypeDescriptorContext? context, global::System.Globalization.CultureInfo? culture, object value) =>
-                                 value is string str && {{idClassName}}.TryParse(str, culture, out var id) ? id : base.ConvertFrom(context, culture, value);
+                                 value is string str && {{idClassName}}.TryParse(str, out var id) ? id : base.ConvertFrom(context, culture, value);
 
                              public override bool CanConvertTo(global::System.ComponentModel.ITypeDescriptorContext? context, global::System.Type? destinationType) =>
                                  destinationType == typeof(string) || base.CanConvertTo(context, destinationType);

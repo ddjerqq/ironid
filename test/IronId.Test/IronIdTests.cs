@@ -52,7 +52,7 @@ public class UserIdTests
         var id = UserId.New();
         var idString = id.ToString();
         
-        var success = UserId.TryParse(idString, null, out var parsed);
+        var success = UserId.TryParse(idString, out var parsed);
         Assert.Multiple(() =>
         {
             Assert.That(success, Is.True);
@@ -63,7 +63,7 @@ public class UserIdTests
     [Test]
     public void UserId_TryParse_InvalidString_ReturnsFalse()
     {
-        var success = UserId.TryParse("invalid", null, out var _);
+        var success = UserId.TryParse("invalid", out var _);
         
         Assert.That(success, Is.False);
     }
@@ -71,7 +71,7 @@ public class UserIdTests
     [Test]
     public void UserId_TryParse_WrongPrefix_ReturnsFalse()
     {
-        var success = UserId.TryParse("pst_01k9axfv3hw9ffa2850ks02njz", null, out _);
+        var success = UserId.TryParse("pst_01k9axfv3hw9ffa2850ks02njz", out _);
         
         Assert.That(success, Is.False);
     }
@@ -81,9 +81,9 @@ public class UserIdTests
     {
         Assert.Multiple(() =>
         {
-            Assert.That(UserId.TryParse(null, null, out _), Is.False);
-            Assert.That(UserId.TryParse("", null, out _), Is.False);
-            Assert.That(UserId.TryParse("   ", null, out _), Is.False);
+            Assert.That(UserId.TryParse(null, out _), Is.False);
+            Assert.That(UserId.TryParse("", out _), Is.False);
+            Assert.That(UserId.TryParse("   ", out _), Is.False);
         });
     }
 
@@ -147,6 +147,7 @@ public class UserIdTests
     {
         var id = UserId.New();
         
+        // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
         Assert.Throws<ArgumentException>(() => id.CompareTo("wrong type"));
     }
 

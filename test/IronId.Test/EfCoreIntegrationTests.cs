@@ -123,7 +123,7 @@ public class EfCoreIntegrationTests
     {
         // Arrange
         await using var context = CreateDbContext();
-        
+
         var customer = new CustomerEntity
         {
             Id = CustomerId.New(),
@@ -185,16 +185,19 @@ public class EfCoreIntegrationTests
 
         // Query using the string representation
         var productIdString = productId.ToString();
-        
+
         // EF Core should be able to compare the IronId with its string representation
         var found = await context.Products
-            .Where(p => p.Id.ToString() == productIdString)
+            .Where(p => p.Id == productIdString)
             .FirstOrDefaultAsync();
 
         // Assert
-        Assert.That(found, Is.Not.Null);
-        Assert.That(found!.Id.ToString(), Is.EqualTo(productIdString));
-        Assert.That(found.Id.ToString(), Does.StartWith("prod_"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found!.Id.ToString(), Is.EqualTo(productIdString));
+            Assert.That(found.Id.ToString(), Does.StartWith("prod_"));
+        });
     }
 
     [Test]
@@ -218,7 +221,7 @@ public class EfCoreIntegrationTests
         // Act
         var toUpdate = await context.Customers.FindAsync(customerId);
         Assert.That(toUpdate, Is.Not.Null);
-        
+
         toUpdate!.Name = "Updated Name";
         toUpdate.Email = "updated@example.com";
         await context.SaveChangesAsync();
@@ -253,7 +256,7 @@ public class EfCoreIntegrationTests
         // Act
         var toDelete = await context.Customers.FindAsync(customerId);
         Assert.That(toDelete, Is.Not.Null);
-        
+
         context.Customers.Remove(toDelete!);
         await context.SaveChangesAsync();
 
@@ -350,7 +353,7 @@ public class EfCoreIntegrationTests
     {
         // Arrange
         await using var context = CreateDbContext();
-        
+
         // Create customers with known IDs
         var customer1 = new CustomerEntity { Id = CustomerId.New(), Name = "Customer 1", Email = "c1@example.com", CreatedAt = DateTime.UtcNow };
         var customer2 = new CustomerEntity { Id = CustomerId.New(), Name = "Customer 2", Email = "c2@example.com", CreatedAt = DateTime.UtcNow };
@@ -376,10 +379,10 @@ public class EfCoreIntegrationTests
     {
         // Arrange
         await using var context = CreateDbContext();
-        
+
         var customer1 = new CustomerEntity { Id = CustomerId.New(), Name = "Customer A", Email = "a@example.com", CreatedAt = DateTime.UtcNow };
         var customer2 = new CustomerEntity { Id = CustomerId.New(), Name = "Customer B", Email = "b@example.com", CreatedAt = DateTime.UtcNow };
-        
+
         var order1 = new OrderEntity { Id = OrderId.New(), CustomerId = customer1.Id, Amount = 100m, OrderDate = DateTime.UtcNow };
         var order2 = new OrderEntity { Id = OrderId.New(), CustomerId = customer1.Id, Amount = 200m, OrderDate = DateTime.UtcNow };
         var order3 = new OrderEntity { Id = OrderId.New(), CustomerId = customer2.Id, Amount = 150m, OrderDate = DateTime.UtcNow };
@@ -408,4 +411,3 @@ public class EfCoreIntegrationTests
         Assert.That(customersWithHighOrders[0].OrderCount, Is.EqualTo(2));
     }
 }
-
