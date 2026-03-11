@@ -15,7 +15,7 @@ public sealed class IronIdGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        // context.RegisterPostInitializationOutput(ctx => ctx.AddSource($"{GeneratedCodeNamespace}.g.cs", CommonSrc));
+        // Runtime helper types are supplied via packaged contentFiles included by IronIdGenerator.props.
 
         // Then generate individual ID types
         var syntaxProvider = context.SyntaxProvider
@@ -30,11 +30,15 @@ public sealed class IronIdGenerator : IIncrementalGenerator
     private static bool SyntacticPredicate(SyntaxNode node, CancellationToken _) => node switch
     {
         ClassDeclarationSyntax { AttributeLists.Count: > 0 } classDeclarationSyntax =>
-            classDeclarationSyntax.AttributeLists.Any(static attr => attr.Attributes.Any(static a => a.Name.ToString() == "IronId")),
+            classDeclarationSyntax.AttributeLists.Any(static attr => attr.Attributes.Any(static a => IsIronIdAttributeName(a.Name.ToString()))),
         RecordDeclarationSyntax { AttributeLists.Count: > 0 } recordDeclarationSyntax =>
-            recordDeclarationSyntax.AttributeLists.Any(static attr => attr.Attributes.Any(static a => a.Name.ToString() == "IronId")),
+            recordDeclarationSyntax.AttributeLists.Any(static attr => attr.Attributes.Any(static a => IsIronIdAttributeName(a.Name.ToString()))),
         _ => false,
     };
+
+    private static bool IsIronIdAttributeName(string attributeName) => attributeName is "IronId" or "IronIdAttribute"
+        or "System.IronId" or "System.IronIdAttribute"
+        or "global::System.IronId" or "global::System.IronIdAttribute";
 
     private static INamedTypeSymbol? SemanticTransform(GeneratorSyntaxContext context, CancellationToken ct)
     {
@@ -47,11 +51,11 @@ public sealed class IronIdGenerator : IIncrementalGenerator
             _ => throw new Exception("IronIdAttribute found on something that is neither a record or a class"),
         };
 
-        if (context.SemanticModel.GetDeclaredSymbol(candidate, ct) is { } entityType)
+        if (context.SemanticModel.GetDeclaredSymbol(candidate, ct) is INamedTypeSymbol entityType)
         {
             var ironId = context.SemanticModel.Compilation.GetTypeByMetadataName("System.IronIdAttribute");
-            if (ironId is not null)
-                return entityType as INamedTypeSymbol;
+            if (ironId is not null && entityType.GetAttributes().Any(attribute => SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, ironId)))
+                return entityType;
         }
 
         return null;

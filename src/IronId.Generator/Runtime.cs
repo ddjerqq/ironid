@@ -5,6 +5,36 @@ using System.Reflection;
 namespace System;
 
 /// <summary>
+/// Marker interface that all generated Strong ID types implement.
+/// Provides methods necessary for universal conversion in ORMs like Entity Framework Core.
+/// </summary>
+public interface IIronId
+{
+    /// <summary>
+    /// Gets the string representation of this IronId.
+    /// </summary>
+    string ToString();
+
+    /// <summary>
+    /// Gets the underlying Ulid value.
+    /// </summary>
+    Ulid GetValue();
+}
+
+/// <summary>
+/// Marks a class as an IronId type with the specified prefix.
+/// </summary>
+/// <param name="prefix">Required prefix for the IronId type.</param>
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+public sealed class IronIdAttribute(string prefix) : Attribute
+{
+    /// <summary>
+    /// Required prefix for the IronId type.
+    /// </summary>
+    public string Prefix { get; set; } = prefix;
+}
+
+/// <summary>
 /// Helper methods for configuring IronId converters.
 /// </summary>
 public static class IronIdExtensions

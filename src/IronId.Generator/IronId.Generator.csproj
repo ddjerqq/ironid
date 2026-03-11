@@ -30,6 +30,7 @@
         <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
         <None Include="IronIdGenerator.props" Pack="true" PackagePath="build\$(PackageId).props"/>
         <None Include="IronIdGenerator.props" Pack="true" PackagePath="buildTransitive\$(PackageId).props"/>
+        <None Include="Runtime.cs" Pack="true" PackagePath="contentFiles/cs/any/IronId.Runtime/" />
         <None Include="./../../README.md" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
