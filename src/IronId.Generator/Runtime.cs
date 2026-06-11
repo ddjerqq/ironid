@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -39,20 +41,23 @@ public sealed class IronIdAttribute(string prefix) : Attribute
 /// </summary>
 public static class IronIdExtensions
 {
+    private static readonly List<Type> IronIdTypes = [];
+    
+    /// <summary>
+    /// Not for consumer use. this is a library internal method.
+    /// However, it needs to be marked as public for now.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static void __RegisterIronIdType(Type type) => IronIdTypes.Add(type);
+    
     /// <summary>
     /// Parses the given string into the appropriate IronId type based on its prefix.
     /// </summary>
     public static IIronId Parse(string s)
     {
-        var idTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(x => typeof(IIronId).IsAssignableFrom(x));
-        
-        foreach (var idType in idTypes)
+        foreach (var idType in IronIdTypes)
         {
             var parseMethod = idType.GetMethod("Parse", [typeof(string)]);
-            // IIronId for example, does not have the Parse method. so we quietly skip.
-            // There is no way that an ID type will not have the Parse method generated,
-            // so if it doesn't it's safe to skip.
             if (parseMethod is not null)
             {
                 try

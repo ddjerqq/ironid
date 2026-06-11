@@ -88,6 +88,13 @@ public sealed class IronIdGenerator : IIncrementalGenerator
                          [global::System.ComponentModel.TypeConverter(typeof({{idClassName}}TypeConverter))]
                          public readonly record struct {{idClassName}}(global::System.Ulid Value) : global::System.IIronId, global::System.IComparable
                          {
+                             static {{idClassName}}() 
+                             {
+                                 // Register this type in the global list of IronId types for universal parsing
+                                 global::System.IronIdExtensions.__RegisterIronIdType(typeof({{idClassName}}));
+                             }
+                             
+                         
                              public const string Prefix = "{{subject.Prefix}}";
                              
                              public static readonly {{idClassName}} Empty = new(global::System.Ulid.Empty);
