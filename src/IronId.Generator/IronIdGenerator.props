@@ -1,0 +1,7 @@
+<Project>
+    <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)..\contentFiles\cs\any\IronId.Runtime\**\*.cs"
+                 Link="IronId.Runtime\%(RecursiveDir)%(Filename)%(Extension)"
+                 Visible="false" />
+    </ItemGroup>
+</Project>

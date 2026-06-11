@@ -2,5 +2,5 @@
 
 public static class Version
 {
-    public const string Current = "1.3.0";
+    public const string Current = "1.4.0";
 }
