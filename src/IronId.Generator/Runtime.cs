@@ -44,12 +44,15 @@ public static class IronIdExtensions
     /// </summary>
     public static IIronId Parse(string s)
     {
-        var idTypes = Assembly.GetCallingAssembly().GetTypes()
+        var idTypes = Assembly.GetExecutingAssembly().GetTypes()
             .Where(x => typeof(IIronId).IsAssignableFrom(x));
         
         foreach (var idType in idTypes)
         {
             var parseMethod = idType.GetMethod("Parse", [typeof(string)]);
+            // IIronId for example, does not have the Parse method. so we quietly skip.
+            // There is no way that an ID type will not have the Parse method generated,
+            // so if it doesn't it's safe to skip.
             if (parseMethod is not null)
             {
                 try
