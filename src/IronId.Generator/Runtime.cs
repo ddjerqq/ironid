@@ -91,10 +91,10 @@ public static class IronIdExtensions
             // If the string doesn't start with this ID type's prefix, skip it completely
             if (!s.StartsWith(prefix + "_", StringComparison.OrdinalIgnoreCase))
             {
-                return idType.GetMethod("Parse", [typeof(string)]);
+                return null;
             }
         }
 
-        return null;
+        return idType.GetMethod("Parse", [typeof(string)]);
     }
 }
